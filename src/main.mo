@@ -1,23 +1,17 @@
-import Cycles "mo:base/ExperimentalCycles";
+import Http "http";
+import Text "mo:base/Text";
 actor {
+    public type HttpResponse = Http.HttpResponse;
+    public type HttpRequest = Http.HttpRequest;
 
-    var counter : Nat = 0;
-
-    public query func show_count() : async Nat {
-        return counter;
+    public query func http_request(req : HttpRequest) : async HttpResponse {
+        let response = {
+            status_code = 200 : Nat16;
+            headers = [];
+            body = Text.encodeUtf8("Hello, world!");
+            streaming_strategy = null;
+        };
+        return response;
     };
 
-    public func inc() : async Nat {
-        counter := counter + 1;
-        return counter;
-    };
-
-    system func heartbeat() : async () {
-        counter := counter + 1;
-    };
-
-    public query func cycle_balance() : async Nat {
-        return Cycles.balance();
-    };  
-    
 };
